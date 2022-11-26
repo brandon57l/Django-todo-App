@@ -2,20 +2,25 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from .models import *
 from .forms import *
+from .filters import *
 
 # Create your views here.
 
 def home(request):
     tasks = Task.objects.all()
     form = TaskForm()
+   
 
     if request.method == 'POST':
         form = TaskForm(request.POST)
         if form.is_valid():
             form.save()
             return redirect('home')
-
-    context = {'tasks':tasks, 'form':form}
+    
+    filter = TaskFilter(request.GET, queryset=tasks)
+    tasks = filter.qs
+    
+    context = {'tasks':tasks, 'form':form, 'filter':filter}
 
     return render(request, 'list.html', context)
 
