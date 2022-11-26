@@ -1,0 +1,7 @@
+
+<form method="POST">
+    {% csrf_token %}
+    <p>Are you sure you want to delete "{{task.title}}"</p>
+    <a href="{% url 'home' %}">Cancel</a>
+    <input type="submit" >
+</form>
